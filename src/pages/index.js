@@ -3,10 +3,7 @@ import Link from "gatsby-link"
 
 export default class IndexPage extends React.Component {
   render() {
-    const posts = this.props.data.allMarkdownRemark.edges.filter(
-      edge => edge.node.frontmatter.templateKey === "blog-post",
-    )
-
+    const posts = this.props.data.allMarkdownRemark.edges
     return (
       <section className="section">
         <div className="container">
@@ -43,7 +40,10 @@ export default class IndexPage extends React.Component {
 
 export const pageQuery = graphql`
   query IndexQuery {
-    allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date] }) {
+    allMarkdownRemark(
+      sort: { order: DESC, fields: [frontmatter___date] }
+      filter: { frontmatter: { templateKey: { eq: "blog-post" } } }
+    ) {
       edges {
         node {
           excerpt(pruneLength: 400)
